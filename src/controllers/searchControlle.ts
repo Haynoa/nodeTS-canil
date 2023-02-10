@@ -1,7 +1,22 @@
 import { Request, Response } from "express";
 
-export const search = (req: Request, res: Response) => {
+import { Pet } from '../models/Pet'
+import { createMenuObject } from '../helpers/createMenuObject'
 
-    res.send('Home da Search')
-    //res.render('pages/search')
+export const search = (req: Request, res: Response) => {
+    let query: string = req.query.search as string
+
+    if(!query) {
+        res.redirect('/')
+        return
+    }
+
+    let list = Pet.getName(query)
+
+    res.render('pages/page', {
+        menu: createMenuObject(''),
+        list,
+        query
+    })
+
 }
